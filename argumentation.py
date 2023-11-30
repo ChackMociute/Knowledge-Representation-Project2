@@ -6,6 +6,7 @@ class ArgumentationFramework:
     
     def find_extentions(self):
         self.find_conflict_free()
+        self.find_admissible()
     
     def find_conflict_free(self):
         # Helper functions
@@ -30,10 +31,23 @@ class ArgumentationFramework:
             level = check_next_level(level)
             self.cf = self.cf.union(level)
         self.cf = sorted(self.cf, key=lambda x: len(x))
+    
+    def find_admissible(self):
+        def defended(set):
+            attacked = [b for a, b in self.ar if a in set]
+            return {e for e in self.args if defends(e, attacked)}
+
+        def defends(item, attacked):
+            for a, b in self.ar:
+                if b == item and not a in attacked:
+                    return False
+            return True
+
+        self.adm = sorted({cf for cf in self.cf if cf.issubset(defended(cf))}, key=lambda x: len(x))
 
 import json
 
-with open('example-argumentation-framework.json', 'r') as f:
-    af = json.loads(f.read())
+# af = json.load(open('example-argumentation-framework.json'))
+af = json.load(open('slide-example.json'))
 
 print(ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations']).cf)
