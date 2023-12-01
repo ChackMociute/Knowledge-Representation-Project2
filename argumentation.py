@@ -10,6 +10,7 @@ class ArgumentationFramework:
         self.find_preferred()
         self.find_complete()
         self.find_grounded()
+        self.find_stable()
     
     def find_conflict_free(self):
         # Helper functions
@@ -37,16 +38,6 @@ class ArgumentationFramework:
     def find_admissible(self):
         self.adm = {cf for cf in self.cf if cf.issubset(self.defended(cf))}
 
-    def defended(self, set):
-        attacked = [b for a, b in self.ar if a in set]
-        return {e for e in self.args if self.defends(e, attacked)}
-
-    def defends(self, item, attacked):
-        for a, b in self.ar:
-            if b == item and not a in attacked:
-                return False
-        return True
-    
     def find_preferred(self):
         pref_len = len(max(self.adm, key=lambda x: len(x)))
         self.pref = {e for e in self.adm if len(e) == pref_len}
@@ -56,6 +47,23 @@ class ArgumentationFramework:
     
     def find_grounded(self):
         self.grd = {c for c in self.comp if all([c.issubset(e) for e in self.comp])}
+    
+    def find_stable(self):
+        def attacks(cf):
+            attacks = self.get_attacks(cf)
+            return all([a in attacks for a in set(self.args).difference(cf)])
+
+        self.stb = {cf for cf in self.cf if attacks(cf)}
+
+    def defended(self, set):
+        attacks = self.get_attacks(set)
+        def defends(item):
+            return all([b != item or a in attacks for a, b in self.ar])
+        
+        return {e for e in self.args if defends(e)}
+    
+    def get_attacks(self, set):
+        return [b for a, b in self.ar if a in set]
 
 
 if __name__ == "__main__":
