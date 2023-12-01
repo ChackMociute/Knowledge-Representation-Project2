@@ -1,18 +1,17 @@
 import unittest
 import json
+import yaml
 
 from argumentation import ArgumentationFramework
 
 class AFSlideExampleTests(unittest.TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         af = json.load(open('slide-example.json'))
         self.af = ArgumentationFramework(
             arguments=af['Arguments'],
             attack_relations=af['Attack Relations'])
         self.af.find_extentions()
-    
-    def tearDown(self):
-        delattr(self, 'af')
 
     def test_conflict_free(self):
         expected = {frozenset(), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), frozenset({'d'}),
@@ -52,49 +51,32 @@ class AFSlideExampleTests(unittest.TestCase):
 
         self.assertCountEqual(expected, actual)
 
-class AFSimpleCFTests(unittest.TestCase):
-    def test_conflict_free1(self):
-        af = ArgumentationFramework(['1', '2', '3'], [['1', '2'], ['2', '3'], ['3', '1']])
-        af.find_conflict_free()
-        
-        expected = {frozenset(), frozenset({'1'}), frozenset({'2'}), frozenset({'3'})}
-        actual = af.cf
 
+def setUpClassFactory(args, ar):
+    @classmethod
+    def setUpClass(self):
+        self.af = ArgumentationFramework(args, ar)
+        self.af.find_extentions()
+    return setUpClass
+
+def test_method_factory(exp, attr):
+    def test_method(self):
+        expected = exp
+        actual = getattr(self.af, attr)
         self.assertCountEqual(expected, actual)
+    return test_method
 
-    def test_conflict_free2(self):
-        af = ArgumentationFramework(['1', '2', '3'], [])
-        af.find_conflict_free()
-        
-        expected = {frozenset(), frozenset({'1'}), frozenset({'2'}), frozenset({'3'}),
-                    frozenset({'1', '2'}), frozenset({'1', '3'}), frozenset({'2', '3'}),
-                    frozenset({'1', '2', '3'})}
-        actual = af.cf
 
-        self.assertCountEqual(expected, actual)
+classes = yaml.safe_load(open('tests.yaml', 'r'))
 
-    def test_conflict_free3(self):
-        af = ArgumentationFramework(['1', '2'], [['1', '1']])
-        af.find_conflict_free()
-        
-        expected = {frozenset(), frozenset({'2'})}
-        actual = af.cf
-
-        self.assertCountEqual(expected, actual)
-
-    def test_conflict_free4(self):
-        af = ArgumentationFramework([], [['a', 'a']])
-        af.find_conflict_free()
-        
-        expected = {frozenset()}
-        actual = af.cf
-
-        self.assertCountEqual(expected, actual)
-
-class AFSimplePreferredTests(unittest.TestCase):
-    # Add tests similar to the ones above for admissible and preferred
-    pass
-
+for cls in classes:
+    globals()[cls['name']] =\
+        type(cls['name'], (unittest.TestCase,), {
+            'setUpClass': setUpClassFactory(cls['args'], cls['ar'])
+        } | {
+            meth: test_method_factory(eval(val['exp']), val['attr'])
+            for meth, val in cls['methods'].items()
+        })
 
 if __name__ == "__main__":
     unittest.main()
