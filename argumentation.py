@@ -8,6 +8,7 @@ class ArgumentationFramework:
         self.find_conflict_free()
         self.find_admissible()
         self.find_preferred()
+        self.find_complete()
     
     def find_conflict_free(self):
         # Helper functions
@@ -33,21 +34,24 @@ class ArgumentationFramework:
             self.cf = self.cf.union(level)
     
     def find_admissible(self):
-        def defended(set):
-            attacked = [b for a, b in self.ar if a in set]
-            return {e for e in self.args if defends(e, attacked)}
+        self.adm = {cf for cf in self.cf if cf.issubset(self.defended(cf))}
 
-        def defends(item, attacked):
-            for a, b in self.ar:
-                if b == item and not a in attacked:
-                    return False
-            return True
+    def defended(self, set):
+        attacked = [b for a, b in self.ar if a in set]
+        return {e for e in self.args if self.defends(e, attacked)}
 
-        self.adm = {cf for cf in self.cf if cf.issubset(defended(cf))}
+    def defends(self, item, attacked):
+        for a, b in self.ar:
+            if b == item and not a in attacked:
+                return False
+        return True
     
     def find_preferred(self):
         pref_len = len(max(self.adm, key=lambda x: len(x)))
         self.pref = {e for e in self.adm if len(e) == pref_len}
+    
+    def find_complete(self):
+        self.comp = {cf for cf in self.cf if cf == self.defended(cf)}
 
 
 if __name__ == "__main__":
