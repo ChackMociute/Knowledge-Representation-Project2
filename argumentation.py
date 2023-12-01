@@ -7,6 +7,7 @@ class ArgumentationFramework:
     def find_extentions(self):
         self.find_conflict_free()
         self.find_admissible()
+        self.find_preferred()
     
     def find_conflict_free(self):
         # Helper functions
@@ -43,6 +44,10 @@ class ArgumentationFramework:
             return True
 
         self.adm = {cf for cf in self.cf if cf.issubset(defended(cf))}
+    
+    def find_preferred(self):
+        pref_len = len(max(self.adm, key=lambda x: len(x)))
+        self.pref = {e for e in self.adm if len(e) == pref_len}
 
 
 if __name__ == "__main__":

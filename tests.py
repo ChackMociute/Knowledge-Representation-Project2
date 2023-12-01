@@ -9,13 +9,12 @@ class AFSlideExampleTests(unittest.TestCase):
         self.af = ArgumentationFramework(
             arguments=af['Arguments'],
             attack_relations=af['Attack Relations'])
+        self.af.find_extentions()
     
     def tearDown(self):
         delattr(self, 'af')
 
     def test_conflict_free(self):
-        self.af.find_conflict_free()
-        
         expected = {frozenset(), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), frozenset({'d'}),
                     frozenset({'a', 'c'}), frozenset({'a', 'd'}), frozenset({'b', 'd'})}
         actual = self.af.cf
@@ -24,12 +23,16 @@ class AFSlideExampleTests(unittest.TestCase):
         self.assertTrue(actual.issubset(expected))
     
     def test_admissible(self):
-        self.af.find_conflict_free()
-        self.af.find_admissible()
-        
         expected = {frozenset(), frozenset({'a'}), frozenset({'c'}), frozenset({'d'}),
                     frozenset({'a', 'c'}), frozenset({'a', 'd'})}
         actual = self.af.adm
+
+        self.assertTrue(expected.issubset(actual))
+        self.assertTrue(actual.issubset(expected))
+    
+    def test_preferred(self):
+        expected = {frozenset({'a', 'c'}), frozenset({'a', 'd'})}
+        actual = self.af.pref
 
         self.assertTrue(expected.issubset(actual))
         self.assertTrue(actual.issubset(expected))
@@ -77,8 +80,8 @@ class AFSimpleCFTests(unittest.TestCase):
         self.assertTrue(expected.issubset(actual))
         self.assertTrue(actual.issubset(expected))
 
-class AFSimpleADMTests(unittest.TestCase):
-    # Add tests similar to the ones above
+class AFSimplePreferredTests(unittest.TestCase):
+    # Add tests similar to the ones above for admissible and preferred
     pass
 
 
