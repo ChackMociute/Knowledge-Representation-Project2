@@ -9,6 +9,7 @@ class ArgumentationFramework:
         self.find_admissible()
         self.find_preferred()
         self.find_complete()
+        self.find_grounded()
     
     def find_conflict_free(self):
         # Helper functions
@@ -52,6 +53,9 @@ class ArgumentationFramework:
     
     def find_complete(self):
         self.comp = {cf for cf in self.cf if cf == self.defended(cf)}
+    
+    def find_grounded(self):
+        self.grd = {c for c in self.comp if all([c.issubset(e) for e in self.comp])}
 
 
 if __name__ == "__main__":

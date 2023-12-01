@@ -39,6 +39,12 @@ class AFSlideExampleTests(unittest.TestCase):
         actual = self.af.comp
 
         self.assertCountEqual(expected, actual)
+    
+    def test_grounded(self):
+        expected = {frozenset({'a'})}
+        actual = self.af.grd
+
+        self.assertCountEqual(expected, actual)
 
 class AFSimpleCFTests(unittest.TestCase):
     def test_conflict_free1(self):
