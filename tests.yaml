@@ -1,3 +1,29 @@
+- name: AFSlideExampleTests
+  args: ['a', 'b', 'c', 'd', 'e']
+  ar: [['a', 'b'], ['c', 'b'], ['c', 'd'], ['d', 'c'], ['d', 'e'], ['e', 'e']]
+  methods:
+    test_conflict_free:
+      exp: set({frozenset(), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), frozenset({'d'}),
+                frozenset({'a', 'c'}), frozenset({'a', 'd'}), frozenset({'b', 'd'})})
+      attr: cf
+    test_admissible:
+      exp: set({frozenset(), frozenset({'a'}), frozenset({'c'}), frozenset({'d'}),
+                frozenset({'a', 'c'}), frozenset({'a', 'd'})})
+      attr: adm
+    test_preferred:
+      exp: set({frozenset({'a', 'c'}), frozenset({'a', 'd'})})
+      attr: pref
+    test_complete:
+      exp: set({frozenset({'a', 'c'}), frozenset({'a', 'd'}), frozenset({'a'})})
+      attr: comp
+    test_grounded:
+      exp: set({frozenset({'a'})})
+      attr: grd
+    test_stable:
+      exp: set({frozenset({'a', 'd'})})
+      attr: stb
+
+# TODO: Add remaining expected sets
 - name: AFNoArgumentTests
   args: []
   ar: [['a', 'a']]
@@ -5,6 +31,21 @@
     test_conflict_free:
       exp: set({frozenset()})
       attr: cf
+    # test_admissible:
+    #   exp: set({})
+    #   attr: adm
+    # test_preferred:
+    #   exp: set({})
+    #   attr: pref
+    # test_complete:
+    #   exp: set({})
+    #   attr: comp
+    # test_grounded:
+    #   exp: set({})
+    #   attr: grd
+    # test_stable:
+    #   exp: set({})
+    #   attr: stb
       
 - name: AFSelfAttackTests
   args: ['1', '2']
@@ -13,6 +54,21 @@
     test_conflict_free:
       exp: set({frozenset(), frozenset({'2'})})
       attr: cf
+    # test_admissible:
+    #   exp: set({})
+    #   attr: adm
+    # test_preferred:
+    #   exp: set({})
+    #   attr: pref
+    # test_complete:
+    #   exp: set({})
+    #   attr: comp
+    # test_grounded:
+    #   exp: set({})
+    #   attr: grd
+    # test_stable:
+    #   exp: set({})
+    #   attr: stb
 
 - name: AFNoRelationTests
   args: ['1', '2', '3']
@@ -23,6 +79,21 @@
                 frozenset({'1', '2'}), frozenset({'1', '3'}), frozenset({'2', '3'}),
                 frozenset({'1', '2', '3'})})
       attr: cf
+    # test_admissible:
+    #   exp: set({})
+    #   attr: adm
+    # test_preferred:
+    #   exp: set({})
+    #   attr: pref
+    # test_complete:
+    #   exp: set({})
+    #   attr: comp
+    # test_grounded:
+    #   exp: set({})
+    #   attr: grd
+    # test_stable:
+    #   exp: set({})
+    #   attr: stb
       
 - name: AFCycleTests
   args: ['1', '2', '3']
@@ -31,3 +102,18 @@
     test_conflict_free:
       exp: set({frozenset(), frozenset({'1'}), frozenset({'2'}), frozenset({'3'})})
       attr: cf
+    # test_admissible:
+    #   exp: set({})
+    #   attr: adm
+    # test_preferred:
+    #   exp: set({})
+    #   attr: pref
+    # test_complete:
+    #   exp: set({})
+    #   attr: comp
+    # test_grounded:
+    #   exp: set({})
+    #   attr: grd
+    # test_stable:
+    #   exp: set({})
+    #   attr: stb

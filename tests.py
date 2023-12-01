@@ -1,55 +1,7 @@
 import unittest
-import json
 import yaml
 
 from argumentation import ArgumentationFramework
-
-class AFSlideExampleTests(unittest.TestCase):
-    @classmethod
-    def setUpClass(self):
-        af = json.load(open('slide-example.json'))
-        self.af = ArgumentationFramework(
-            arguments=af['Arguments'],
-            attack_relations=af['Attack Relations'])
-        self.af.find_extentions()
-
-    def test_conflict_free(self):
-        expected = {frozenset(), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), frozenset({'d'}),
-                    frozenset({'a', 'c'}), frozenset({'a', 'd'}), frozenset({'b', 'd'})}
-        actual = self.af.cf
-
-        self.assertCountEqual(expected, actual)
-    
-    def test_admissible(self):
-        expected = {frozenset(), frozenset({'a'}), frozenset({'c'}), frozenset({'d'}),
-                    frozenset({'a', 'c'}), frozenset({'a', 'd'})}
-        actual = self.af.adm
-
-        self.assertCountEqual(expected, actual)
-    
-    def test_preferred(self):
-        expected = {frozenset({'a', 'c'}), frozenset({'a', 'd'})}
-        actual = self.af.pref
-
-        self.assertCountEqual(expected, actual)
-    
-    def test_complete(self):
-        expected = {frozenset({'a', 'c'}), frozenset({'a', 'd'}), frozenset({'a'})}
-        actual = self.af.comp
-
-        self.assertCountEqual(expected, actual)
-    
-    def test_grounded(self):
-        expected = {frozenset({'a'})}
-        actual = self.af.grd
-
-        self.assertCountEqual(expected, actual)
-    
-    def test_stable(self):
-        expected = {frozenset({'a', 'd'})}
-        actual = self.af.stb
-
-        self.assertCountEqual(expected, actual)
 
 
 def setUpClassFactory(args, ar):
@@ -67,8 +19,10 @@ def test_method_factory(exp, attr):
     return test_method
 
 
+# Load test class descriptions
 classes = yaml.safe_load(open('tests.yaml', 'r'))
 
+# Generate and save test cases from descriptions
 for cls in classes:
     globals()[cls['name']] =\
         type(cls['name'], (unittest.TestCase,), {
