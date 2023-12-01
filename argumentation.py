@@ -30,7 +30,6 @@ class ArgumentationFramework:
         while len(level) > 0:
             level = check_next_level(level)
             self.cf = self.cf.union(level)
-        self.cf = sorted(self.cf, key=lambda x: len(x))
     
     def find_admissible(self):
         def defended(set):
@@ -43,11 +42,13 @@ class ArgumentationFramework:
                     return False
             return True
 
-        self.adm = sorted({cf for cf in self.cf if cf.issubset(defended(cf))}, key=lambda x: len(x))
+        self.adm = {cf for cf in self.cf if cf.issubset(defended(cf))}
 
-import json
 
-# af = json.load(open('example-argumentation-framework.json'))
-af = json.load(open('slide-example.json'))
+if __name__ == "__main__":
+    import json
 
-print(ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations']).cf)
+    # af = json.load(open('example-argumentation-framework.json'))
+    af = json.load(open('slide-example.json'))
+    
+    print(ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations']).cf)
