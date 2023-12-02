@@ -11,6 +11,7 @@ class DiscussionGame:
     def play(self, argument=None):
         argument = choice(list(af.args)) if argument is None else argument
         while not self.termination(argument):
+            os.system('cls')
             argument = self.turn(argument)
         self.display_winner()
     
@@ -52,8 +53,9 @@ class DiscussionGame:
         while True:
             inp = input("Your choice: ")
             if inp in self.valid: return inp
-            print("Input does not match available options. Enter one of the following:\n\t", end='')
+            print("\nInput does not match available options. Enter one of the following:\n\t", end='')
             print(' '.join([f"({a})" for a in self.valid]))
+            print()
     
     def display_valid(self):
         print("----------------------------YOUR OPTIONS----------------------------")
@@ -80,7 +82,7 @@ if __name__ == "__main__":
 
     af = json.load(open('example-argumentation-framework.json'))
     # af = json.load(open('slide-example.json'))
-    
+
     af = ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations'])
     dg = DiscussionGame(af)
     dg.play()
