@@ -95,25 +95,25 @@
     #   exp: set({})
     #   attr: stb
       
-- name: AFCycleTests
+- name: AFOddCycleTests
   args: ['1', '2', '3']
   ar: [['1', '2'], ['2', '3'], ['3', '1']]
   methods:
     test_conflict_free:
       exp: set({frozenset(), frozenset({'1'}), frozenset({'2'}), frozenset({'3'})})
       attr: cf
-    # test_admissible:
-    #   exp: set({})
-    #   attr: adm
-    # test_preferred:
-    #   exp: set({})
-    #   attr: pref
-    # test_complete:
-    #   exp: set({})
-    #   attr: comp
-    # test_grounded:
-    #   exp: set({})
-    #   attr: grd
-    # test_stable:
-    #   exp: set({})
-    #   attr: stb
+    test_admissible:
+      exp: set({frozenset()})
+      attr: adm
+    test_preferred:
+      exp: set({frozenset()})
+      attr: pref
+    test_complete:
+      exp: set({frozenset()})
+      attr: comp
+    test_grounded:
+      exp: set({frozenset()})
+      attr: grd
+    test_stable:
+      exp: set()
+      attr: stb
