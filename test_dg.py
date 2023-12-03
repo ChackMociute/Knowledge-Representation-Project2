@@ -10,13 +10,27 @@ attacked_cycle = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b',
 
 
 class DGTerminationTests(unittest.TestCase):
-    def test(self):
-        pass
-
-
-class DGArgSelectionTests(unittest.TestCase):
-    def test(self):
-        pass
+    def test_empty(self):
+        dg = DiscussionGame(self_attack_af)
+        self.assertFalse(dg.termination('a'))
+        
+    def test_self_attack(self):
+        dg = DiscussionGame(self_attack_af)
+        dg.in_.add('a')
+        dg.last_opp_arg = 'a'
+        dg.out.add('a')
+        
+        self.assertTrue(dg.termination(dg.select_arg()))
+        self.assertTrue(dg.win)
+        
+    def test_two_cycle(self):
+        dg = DiscussionGame(two_cycle_af)
+        dg.in_.add('a')
+        dg.last_opp_arg = 'b'
+        dg.out.add('b')
+        
+        self.assertTrue(dg.termination(dg.select_arg()))
+        self.assertFalse(dg.win)
     
     
 class DGValidArgTests(unittest.TestCase):
@@ -133,6 +147,11 @@ class DGValidArgTests(unittest.TestCase):
         actual = dg.valid
 
         self.assertCountEqual(expected, actual)
+
+
+class DGArgSelectionTests(unittest.TestCase):
+    def test(self):
+        pass
     
     
 if __name__ == "__main__":
