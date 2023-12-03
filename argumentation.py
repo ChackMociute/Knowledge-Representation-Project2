@@ -65,11 +65,23 @@ class ArgumentationFramework:
     def get_attacks(self, set):
         return [b for a, b in self.ar if a in set]
 
+    def credulous_acceptance(self, argument, semantics='stb'):
+        try: 
+            return 'yes' if argument in {a for arg in getattr(self, semantics) for a in arg} else 'no'
+        except AttributeError:
+            return 'Incorrect semantics provided. Available semantics: cf, adm, pref, comp, grd, stb'
+
 
 if __name__ == "__main__":
     import json
+    from sys import argv
 
     # af = json.load(open('example-argumentation-framework.json'))
-    af = json.load(open('slide-example.json'))
+    # af = json.load(open('slide-example.json'))
     
-    print(ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations']).cf)
+    try:
+        af = json.load(open(argv[1]))
+        af = ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations'])
+        print(af.credulous_acceptance(argv[2]))
+    except (IndexError, FileNotFoundError):
+        print("Invalid input. Call as:\n\tpython argumentation.py file.json argument")
