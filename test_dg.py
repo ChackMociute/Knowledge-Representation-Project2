@@ -150,8 +150,42 @@ class DGValidArgTests(unittest.TestCase):
 
 
 class DGArgSelectionTests(unittest.TestCase):
-    def test(self):
-        pass
+    def test_self_attack(self):
+        dg = DiscussionGame(self_attack_af)
+        dg.last_opp_arg = 'a'
+        dg.out.add('a')
+        
+        expected = 'a'
+        actual = dg.select_arg()
+        
+        self.assertEqual(expected, actual)
+        
+    def test_two_cycle(self):
+        dg = DiscussionGame(two_cycle_af)
+        dg.last_opp_arg = 'a'
+        dg.out.add('a')
+        
+        expected = 'b'
+        actual = dg.select_arg()
+        
+        self.assertEqual(expected, actual)
+        
+    def test_odd_cycle(self):
+        dg = DiscussionGame(odd_cycle_af)
+        dg.last_opp_arg = 'a'
+        dg.out.add('a')
+        
+        expected = {'b', 'c'}
+        actual = dg.select_arg()
+        
+        self.assertTrue(actual in expected)
+        
+    def test_attacked_cycle(self):
+        dg = DiscussionGame(attacked_cycle)
+        dg.last_opp_arg = 'd'
+        dg.out.add('d')
+        
+        self.assertIsNone(dg.select_arg())
     
     
 if __name__ == "__main__":
