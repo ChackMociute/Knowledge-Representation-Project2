@@ -1,6 +1,5 @@
 import unittest
 import yaml
-
 from argumentation import ArgumentationFramework
 
 
