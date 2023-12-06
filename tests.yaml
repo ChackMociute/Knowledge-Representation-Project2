@@ -31,21 +31,21 @@
     test_conflict_free:
       exp: set({frozenset()})
       attr: cf
-    # test_admissible:
-    #   exp: set({})
-    #   attr: adm
-    # test_preferred:
-    #   exp: set({})
-    #   attr: pref
-    # test_complete:
-    #   exp: set({})
-    #   attr: comp
-    # test_grounded:
-    #   exp: set({})
-    #   attr: grd
-    # test_stable:
-    #   exp: set({})
-    #   attr: stb
+     test_admissible:
+       exp: set({frozenset()})
+       attr: adm
+     test_preferred:
+       exp: set({frozenset()})
+       attr: pref
+     test_complete:
+       exp: set({frozenset()})
+       attr: comp
+     test_grounded:
+       exp: set({frozenset()})
+       attr: grd
+     test_stable:
+       exp: set()
+       attr: stb
       
 - name: AFSelfAttackTests
   args: ['1', '2']
@@ -54,21 +54,21 @@
     test_conflict_free:
       exp: set({frozenset(), frozenset({'2'})})
       attr: cf
-    # test_admissible:
-    #   exp: set({})
-    #   attr: adm
-    # test_preferred:
-    #   exp: set({})
-    #   attr: pref
-    # test_complete:
-    #   exp: set({})
-    #   attr: comp
-    # test_grounded:
-    #   exp: set({})
-    #   attr: grd
-    # test_stable:
-    #   exp: set({})
-    #   attr: stb
+    test_admissible:
+      exp: set({frozenset(), frozenset({'2'})})
+      attr: adm
+    test_preferred:
+      exp: set({frozenset({'2'})})
+      attr: pref
+    test_complete:
+      exp: set(frozenset({'2'})})
+      attr: comp
+    test_grounded:
+      exp: set({frozenset({'2'})})
+      attr: grd
+    test_stable:
+      exp: set({frozenset({'2'})})
+      attr: stb
 
 - name: AFNoRelationTests
   args: ['1', '2', '3']
@@ -79,21 +79,23 @@
                 frozenset({'1', '2'}), frozenset({'1', '3'}), frozenset({'2', '3'}),
                 frozenset({'1', '2', '3'})})
       attr: cf
-    # test_admissible:
-    #   exp: set({})
-    #   attr: adm
-    # test_preferred:
-    #   exp: set({})
-    #   attr: pref
-    # test_complete:
-    #   exp: set({})
-    #   attr: comp
-    # test_grounded:
-    #   exp: set({})
-    #   attr: grd
-    # test_stable:
-    #   exp: set({})
-    #   attr: stb
+    test_admissible:
+      exp: set({frozenset(), frozenset({'1'}), frozenset({'2'}), frozenset({'3'}),
+                frozenset({'1', '2'}), frozenset({'1', '3'}), frozenset({'2', '3'}),
+                frozenset({'1', '2', '3'})})
+      attr: adm
+    test_preferred:
+      exp: set({frozenset({'1', '2', '3'})})
+      attr: pref
+    test_complete:
+      exp: set(frozenset({'1', '2', '3'}))
+      attr: comp
+    test_grounded:
+      exp: set({frozenset({'1', '2', '3'})})
+      attr: grd
+    test_stable:
+      exp: set({frozenset({'1', '2', '3'})})
+      attr: stb
       
 - name: AFOddCycleTests
   args: ['1', '2', '3']
@@ -117,3 +119,33 @@
     test_stable:
       exp: set()
       attr: stb
+
+- name: ArguBig
+  args: ['a', 'b', 'c', 'd', 'e']
+  ar: [['a', 'b'], ['c', 'b'], ['c', 'd'], ['d', 'c'], ['d', 'e'], ['e', 'e']]
+  methods:
+    test_conflict_free:
+      exp: set({frozenset(), frozenset({'k'}), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), 
+                frozenset({'d'}), frozenset({'e'}), frozenset({'b','k'}), frozenset({'c','k'}), frozenset({'c','a'}), frozenset({'d','k'}),
+                frozenset({'d','a'}), frozenset({'d','c'}), frozenset({'e',k}), frozenset({'e','a'}), frozenset({'e','c'}), 
+                frozenset({'e','b'}), frozenset({'d','c','k'}), frozenset({'d','c','a'}), frozenset({'e','c','k'}), frozenset({'e','c','a'}) })
+      attr: cf
+    test_admissible:
+      exp: set({frozenset(), frozenset({'c'}), 
+                frozenset({'e'}), frozenset({'c','k'}), frozenset({'c','a'}), 
+                frozenset({'e',k}), frozenset({'e','a'}), frozenset({'e','c'}), 
+                frozenset({'e','c','k'}), frozenset({'e','c','a'}) })
+      attr: adm
+    test_preferred:
+      exp: set({frozenset()})
+      attr: pref
+    test_complete:
+      exp: set({frozenset()})
+      attr: comp
+    test_grounded:
+      exp: set({frozenset()})
+      attr: grd
+    test_stable:
+      exp: set()
+      attr: stb
+
