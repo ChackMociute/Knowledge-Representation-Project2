@@ -1,0 +1,15 @@
+{
+    "Arguments" : {
+        "a": "We should go to the beach.",
+        "b": "We should go to the zoo.",
+        "c": "We should go to the spa.",
+        "d": "We should go to the concert.",
+        "e": "We should go to the restaurant.",
+        "k": "We should go to the skate park."
+    },
+    
+    "Attack Relations" : [
+        ["e","d"], ["d","b"], ["b","a"], 
+        ["c","b"], ["a","k"]
+    ]
+}

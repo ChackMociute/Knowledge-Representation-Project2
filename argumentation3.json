@@ -1,0 +1,14 @@
+{
+    "Arguments" : {
+        "a": "We should watch a comedy movie.",
+        "b": "We should watch a horror movie.",
+        "c": "We should watch a documentary movie.",
+        "d": "We should watch a musical movie.",
+        "e": "We should watch a sci-fi movie."
+    },
+    
+    "Attack Relations" : [
+        ["a","b"], ["b","a"], ["b","c"], 
+        ["c","d"], ["d","e"], ["e","c"]
+    ]
+}
