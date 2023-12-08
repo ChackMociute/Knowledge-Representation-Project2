@@ -76,9 +76,6 @@ if __name__ == "__main__":
     import json
     from sys import argv
     from datetime import datetime
-
-    # af = json.load(open('example-argumentation-framework.json'))
-    # af = json.load(open('slide-example.json'))
     
     try:
         afd = json.load(open(argv[1]))
