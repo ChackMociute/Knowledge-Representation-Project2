@@ -8,6 +8,12 @@ odd_cycle_af = ArgumentationFramework(['a', 'b', 'c'], [['a', 'b'], ['b', 'c'], 
 four_cycle_af = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'a']])
 attacked_cycle = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b', 'c'], ['c', 'a'], ['d', 'a']])
 
+empty_af = ArgumentationFramework([], [])
+disconnected_af = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['c', 'd']])
+single_argument_af = ArgumentationFramework(['a'], [])
+complex_af = ArgumentationFramework(['a', 'b', 'c', 'd', 'e'], [['a', 'b'], ['b', 'c'], ['c', 'a'], ['c', 'd'], ['d', 'e'], ['e', 'c']])
+incomplete_af = ArgumentationFramework(['a', 'b', 'c'], [['a', 'b']])
+
 
 class DGTerminationTests(unittest.TestCase):
     def test_empty(self):
@@ -31,8 +37,87 @@ class DGTerminationTests(unittest.TestCase):
         
         self.assertTrue(dg.termination(dg.select_arg()))
         self.assertFalse(dg.win)
+
+    def test_empty_argumentation_framework(self):
+        dg = DiscussionGame(empty_af)
+        
+        self.assertIsNone(dg.select_arg())
+        self.assertTrue(dg.termination(None))
+        self.assertTrue(dg.win)
+
     
+    def test_disconnected_framework(self):
+        # kind of same as unattacked network works
+        dg = DiscussionGame(disconnected_af)
+        dg.in_.add('a')
+        dg.find_valid_opp_arguments()
+        
+        expected = {'b'}
+        actual = dg.valid
+        
+        self.assertCountEqual(expected, actual)
+        
+        dg.last_opp_arg = 'b'
+        dg.out.add('b')
+        
+        expected = 'a'
+        actual = dg.select_arg()
+        
+        self.assertEqual(expected, actual)
+        
+        self.assertTrue(dg.termination(actual))
+        self.assertFalse(dg.win)
+
+
+    def test_single_argument_framework(self):
+        dg = DiscussionGame(single_argument_af)
+        dg.in_.add('a')
+        dg.find_valid_opp_arguments()
+        
+        expected = set()
+        actual = dg.valid
+        
+        self.assertEqual(expected, actual)
+        
+        # Ensure the game terminates immediately without any argument selection
+        self.assertTrue(dg.termination('a'))
+        self.assertFalse(dg.win)
     
+
+    def test_mutual_attack_cycle(self): 
+        dg = DiscussionGame(two_cycle_af)
+        dg.in_.add('a')
+        dg.last_opp_arg = 'b'
+        dg.out.add('b')
+
+        self.assertTrue(dg.termination(dg.select_arg()))
+        self.assertFalse(dg.win)
+
+    # DOES NOT WORK YET
+    def test_complex_argumentation(self): 
+        dg = DiscussionGame(complex_af)
+        dg.in_.add('a')
+        dg.out.add('b')
+        dg.in_.add('a')
+        dg.last_opp_arg = 'c'
+        dg.out.add('c')
+
+        # assumed termination should occur without win 
+        # because of cyclic nature 
+        self.assertTrue(dg.termination(dg.select_arg()))
+        self.assertFalse(dg.win)
+
+
+    def test_incomplete_attack_relations(self): 
+        dg = DiscussionGame(incomplete_af)
+        dg.in_.add('a')
+        dg.last_opp_arg = 'b'
+        dg.out.add('b')
+
+        # Test if the game handles the incomplete relation and terminates without an error
+        self.assertTrue(dg.termination(dg.select_arg()))
+
+
 class DGValidArgTests(unittest.TestCase):
     def test_self_attack(self):
         dg = DiscussionGame(self_attack_af)

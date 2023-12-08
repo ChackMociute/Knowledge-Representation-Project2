@@ -9,7 +9,8 @@ class DiscussionGame:
         self.in_, self.out = set(), set()
     
     def play(self, argument=None):
-        argument = choice(list(af.args)) if argument is None else argument
+        argument = (choice(list(self.af.args)) if argument is None else
+                    argument) if len(self.af.args) > 0 else None
         while not self.termination(argument):
             os.system('cls')
             argument = self.turn(argument)
