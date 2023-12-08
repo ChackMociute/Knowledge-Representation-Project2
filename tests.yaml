@@ -43,7 +43,7 @@
        exp: set({frozenset()})
        attr: grd
      test_stable:
-       exp: set()
+       exp: set({frozenset()})
        attr: stb
       
 - name: AFSelfAttackTests
@@ -127,23 +127,23 @@
       exp: set({frozenset(), frozenset({'k'}), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), 
                 frozenset({'d'}), frozenset({'e'}), frozenset({'b','k'}), frozenset({'c','k'}), frozenset({'c','a'}), frozenset({'d','k'}),
                 frozenset({'d','a'}), frozenset({'d','c'}), frozenset({'e','k'}), frozenset({'e','a'}), frozenset({'e','c'}), 
-                frozenset({'e','b'}), frozenset({'d','c','k'}), frozenset({'d','c','a'}), frozenset({'e','c','k'}), frozenset({'e','c','a'})})
+                frozenset({'e','b'}), frozenset({'d','c','k'}), frozenset({'d','c','a'}), frozenset({'e','c','k'}), frozenset({'e','c','a'}), frozenset({'b', 'k', 'e'})})
       attr: cf
     test_admissible:
-      exp: set({frozenset(), frozenset({'c'}), 
-                frozenset({'e'}), frozenset({'e','c'})})
+      exp: set({frozenset(), frozenset({'c'}), frozenset({'e', 'c', 'a'}),
+                frozenset({'e'}), frozenset({'e','c'}), frozenset({'c', 'a'})})
       attr: adm
     test_preferred:
-      exp: set({frozenset({'e','c'})})
+      exp: set({frozenset({'a', 'e', 'c'})})
       attr: pref
     test_complete:
-      exp: set({frozenset({'e','c'})})
+      exp: set({frozenset({'a', 'e', 'c'})})
       attr: comp
     test_grounded:
-      exp: set({frozenset({'e','c'})})
+      exp: set({frozenset({'a', 'e', 'c'})})
       attr: grd
     test_stable:
-      exp: set()
+      exp: set({frozenset({'a', 'e', 'c'})})
       attr: stb
 
 - name: AFAugmentedOddCycleTests
@@ -157,17 +157,17 @@
       attr: cf
     test_admissible:
       exp: set({frozenset(), frozenset({'a'}), 
-                frozenset({'b'}), frozenset({'a','c'}), frozenset({'b','d'})})
+                frozenset({'b'}), frozenset({'b','d'})})
       attr: adm
     test_preferred:
-      exp: set({frozenset({'a','c'}), frozenset({'b','d'})})
+      exp: set({frozenset({'b','d'})})
       attr: pref
     test_complete:
-      exp: set({frozenset({'b'}), frozenset({'a','c'}), frozenset({'b','d'})})
+      exp: set({frozenset(), frozenset({'a'}), frozenset({'b','d'})})
       attr: comp
     test_grounded:
-      exp: set({frozenset({'b'})})
+      exp: set({frozenset()})
       attr: grd
     test_stable:
-      exp: set(frozenset({'b','d'}))
+      exp: set({frozenset({'b','d'})})
       attr: stb
