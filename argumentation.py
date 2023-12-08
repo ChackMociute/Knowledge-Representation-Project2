@@ -75,13 +75,15 @@ class ArgumentationFramework:
 if __name__ == "__main__":
     import json
     from sys import argv
-
-    # af = json.load(open('example-argumentation-framework.json'))
-    # af = json.load(open('slide-example.json'))
+    from datetime import datetime
     
     try:
-        af = json.load(open(argv[1]))
-        af = ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations'])
-        print(af.credulous_acceptance(argv[2]))
+        afd = json.load(open(argv[1]))
+        start = datetime.now()
+        for _ in range(1000):
+            af = ArgumentationFramework(arguments=afd['Arguments'], attack_relations=afd['Attack Relations'])
+            ans = af.credulous_acceptance(argv[2], semantics=argv[3]) if len(argv) > 3 else af.credulous_acceptance(argv[2])
+        print(ans)
+        print(f"Running time: {(datetime.now() - start).total_seconds()/1000:.3e}s")
     except (IndexError, FileNotFoundError):
-        print("Invalid input. Call as:\n\tpython argumentation.py file.json argument")
+        print("Invalid input. Call as:\n\tpython argumentation.py <file> <argument> <semantic|(optional)>")

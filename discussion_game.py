@@ -79,10 +79,12 @@ class DiscussionGame:
 
 if __name__ == "__main__":
     import json
-
-    # af = json.load(open('example-argumentation-framework.json'))
-    af = json.load(open('argumentation3.json'))
-
-    af = ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations'])
-    dg = DiscussionGame(af)
-    dg.play()
+    from sys import argv
+    
+    try:
+        afd = json.load(open(argv[1]))
+        af = ArgumentationFramework(arguments=afd['Arguments'], attack_relations=afd['Attack Relations'])
+        dg = DiscussionGame(af)
+        dg.play() if len(argv) <= 2 else dg.play(argv[2])
+    except (IndexError, FileNotFoundError):
+        print("Invalid input. Call as:\n\tpython discussion_game.py <file> <argument|(optional)>")
