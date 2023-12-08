@@ -7,6 +7,10 @@ two_cycle_af = ArgumentationFramework(['a', 'b'], [['a', 'b'], ['b', 'a']])
 odd_cycle_af = ArgumentationFramework(['a', 'b', 'c'], [['a', 'b'], ['b', 'c'], ['c', 'a']])
 four_cycle_af = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'a']])
 attacked_cycle = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b', 'c'], ['c', 'a'], ['d', 'a']])
+independent_node = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b', 'c'], ['c', 'a']])
+independent_cycle = ArgumentationFramework(['a', 'b', 'c', 'd', 'e'], [['a', 'b'], ['b', 'c'], ['c', 'a'], ['d', 'e']])
+a_only_attacks_af = ArgumentationFramework(['a', 'b', 'c', 'd', 'e'], [['a', 'b'], ['a', 'c'], ['a', 'd'], ['a', 'e'], ['d', 'b']])
+
 
 empty_af = ArgumentationFramework([], [])
 disconnected_af = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['c', 'd']])
@@ -264,6 +268,16 @@ class DGArgSelectionTests(unittest.TestCase):
         actual = dg.select_arg()
         
         self.assertTrue(actual in expected)
+
+    def test_four_cycle(self):
+        dg = DiscussionGame(four_cycle_af)
+        dg.last_opp_arg = 'a'
+        dg.out.add('a')
+        
+        expected = {'b', 'c', 'd'}
+        actual = dg.select_arg()
+        
+        self.assertTrue(actual in expected)
         
     def test_attacked_cycle(self):
         dg = DiscussionGame(attacked_cycle)
@@ -271,7 +285,31 @@ class DGArgSelectionTests(unittest.TestCase):
         dg.out.add('d')
         
         self.assertIsNone(dg.select_arg())
-    
-    
+
+    def test_independent_node(self):
+        dg = DiscussionGame(independent_node)
+        dg.last_opp_arg = 'd'
+        dg.out.add('d')
+
+        self.assertIsNone(dg.select_arg())
+
+    def test_independent_cycle(self):
+        dg = DiscussionGame(attacked_cycle)
+        dg.last_opp_arg = 'c'
+        dg.out.add('c')
+
+        expected = {'a', 'b'}
+        actual = dg.select_arg()
+
+        self.assertTrue(actual in expected)
+
+    def test_no_attacks_left(self):
+        dg = DiscussionGame(a_only_attacks_af)
+        dg.last_opp_arg = 'a'
+        dg.out.add('b')
+
+        self.assertIsNone(dg.select_arg())
+
+        
 if __name__ == "__main__":
     unittest.main()
