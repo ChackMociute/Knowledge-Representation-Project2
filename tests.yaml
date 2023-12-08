@@ -23,14 +23,13 @@
       exp: set({frozenset({'a', 'd'})})
       attr: stb
 
-# TODO: Add remaining expected sets
 - name: AFNoArgumentTests
   args: []
   ar: [['a', 'a']]
   methods:
-    test_conflict_free:
-      exp: set({frozenset()})
-      attr: cf
+     test_conflict_free:
+       exp: set({frozenset()})
+       attr: cf
      test_admissible:
        exp: set({frozenset()})
        attr: adm
@@ -61,7 +60,7 @@
       exp: set({frozenset({'2'})})
       attr: pref
     test_complete:
-      exp: set(frozenset({'2'})})
+      exp: set({frozenset({'2'})})
       attr: comp
     test_grounded:
       exp: set({frozenset({'2'})})
@@ -88,7 +87,7 @@
       exp: set({frozenset({'1', '2', '3'})})
       attr: pref
     test_complete:
-      exp: set(frozenset({'1', '2', '3'}))
+      exp: set({frozenset({'1', '2', '3'})})
       attr: comp
     test_grounded:
       exp: set({frozenset({'1', '2', '3'})})
@@ -120,14 +119,14 @@
       exp: set()
       attr: stb
 
-- name: ArguBig
-  args: ['a', 'b', 'c', 'd', 'e']
-  ar: [['a', 'b'], ['c', 'b'], ['c', 'd'], ['d', 'c'], ['d', 'e'], ['e', 'e']]
+- name: AFColliderTests
+  args: ['a', 'b', 'c', 'd', 'e', 'k']
+  ar: [["e","d"], ["d","b"], ["b","a"], ["c","b"], ["a","k"]]
   methods:
     test_conflict_free:
       exp: set({frozenset(), frozenset({'k'}), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), 
                 frozenset({'d'}), frozenset({'e'}), frozenset({'b','k'}), frozenset({'c','k'}), frozenset({'c','a'}), frozenset({'d','k'}),
-                frozenset({'d','a'}), frozenset({'d','c'}), frozenset({'e',k}), frozenset({'e','a'}), frozenset({'e','c'}), 
+                frozenset({'d','a'}), frozenset({'d','c'}), frozenset({'e','k'}), frozenset({'e','a'}), frozenset({'e','c'}), 
                 frozenset({'e','b'}), frozenset({'d','c','k'}), frozenset({'d','c','a'}), frozenset({'e','c','k'}), frozenset({'e','c','a'})})
       attr: cf
     test_admissible:
@@ -147,24 +146,24 @@
       exp: set()
       attr: stb
 
-- name: ArguTres
+- name: AFAugmentedOddCycleTests
   args: ['a', 'b', 'c', 'd', 'e']
   ar: [['a', 'b'], ['b', 'a'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'c']]
   methods:
     test_conflict_free:
       exp: set({frozenset(), frozenset({'a'}), frozenset({'b'}), frozenset({'c'}), 
                 frozenset({'d'}), frozenset({'e'}), frozenset({'a','c'}), frozenset({'a','d'}), frozenset({'a','e'}), frozenset({'b','d'}),
-                frozenset({'b','e'}})
+                frozenset({'b','e'})})
       attr: cf
     test_admissible:
       exp: set({frozenset(), frozenset({'a'}), 
                 frozenset({'b'}), frozenset({'a','c'}), frozenset({'b','d'})})
       attr: adm
     test_preferred:
-      exp: set({frozenset({'a','c'}), frozenset({'b','d'})}
+      exp: set({frozenset({'a','c'}), frozenset({'b','d'})})
       attr: pref
     test_complete:
-      exp: set({frozenset({'b'}), frozenset({'a','c'}), frozenset({'b','d'})}
+      exp: set({frozenset({'b'}), frozenset({'a','c'}), frozenset({'b','d'})})
       attr: comp
     test_grounded:
       exp: set({frozenset({'b'})})
