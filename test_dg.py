@@ -2,6 +2,8 @@ import unittest
 from argumentation import ArgumentationFramework
 from discussion_game import DiscussionGame
 
+
+# AFs for testing
 self_attack_af = ArgumentationFramework(['a'], [['a', 'a']])
 two_cycle_af = ArgumentationFramework(['a', 'b'], [['a', 'b'], ['b', 'a']])
 odd_cycle_af = ArgumentationFramework(['a', 'b', 'c'], [['a', 'b'], ['b', 'c'], ['c', 'a']])
@@ -10,8 +12,6 @@ attacked_cycle = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b',
 independent_node = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['b', 'c'], ['c', 'a']])
 independent_cycle = ArgumentationFramework(['a', 'b', 'c', 'd', 'e'], [['a', 'b'], ['b', 'c'], ['c', 'a'], ['d', 'e']])
 a_only_attacks_af = ArgumentationFramework(['a', 'b', 'c', 'd', 'e'], [['a', 'b'], ['a', 'c'], ['a', 'd'], ['a', 'e'], ['d', 'b']])
-
-
 empty_af = ArgumentationFramework([], [])
 disconnected_af = ArgumentationFramework(['a', 'b', 'c', 'd'], [['a', 'b'], ['c', 'd']])
 single_argument_af = ArgumentationFramework(['a'], [])
@@ -48,7 +48,6 @@ class DGTerminationTests(unittest.TestCase):
         self.assertIsNone(dg.select_arg())
         self.assertTrue(dg.termination(None))
         self.assertTrue(dg.win)
-
     
     def test_disconnected_framework(self):
         # kind of same as unattacked network works
@@ -72,7 +71,6 @@ class DGTerminationTests(unittest.TestCase):
         self.assertTrue(dg.termination(actual))
         self.assertFalse(dg.win)
 
-
     def test_single_argument_framework(self):
         dg = DiscussionGame(single_argument_af)
         dg.in_.add('a')
@@ -83,11 +81,9 @@ class DGTerminationTests(unittest.TestCase):
         
         self.assertEqual(expected, actual)
         
-        # Ensure the game terminates immediately without any argument selection
         self.assertTrue(dg.termination('a'))
         self.assertFalse(dg.win)
     
-
     def test_mutual_attack_cycle(self): 
         dg = DiscussionGame(two_cycle_af)
         dg.in_.add('a')
@@ -97,7 +93,6 @@ class DGTerminationTests(unittest.TestCase):
         self.assertTrue(dg.termination(dg.select_arg()))
         self.assertFalse(dg.win)
 
-    # DOES NOT WORK YET
     def test_complex_argumentation(self): 
         dg = DiscussionGame(complex_af)
         dg.in_.add('a')

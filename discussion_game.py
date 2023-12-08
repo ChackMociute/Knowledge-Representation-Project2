@@ -77,7 +77,6 @@ class DiscussionGame:
             print("You have lost the argument within this argument framework.")
         
 
-
 if __name__ == "__main__":
     import json
 
