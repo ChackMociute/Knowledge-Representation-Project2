@@ -1,10 +1,10 @@
 {
     "Arguments" : {
-        "a": "We should watch a comedy movie.",
-        "b": "We should watch a horror movie.",
-        "c": "We should watch a documentary movie.",
-        "d": "We should watch a musical movie.",
-        "e": "We should watch a sci-fi movie."
+        "a": "Water puts out fire.",
+        "b": "Fire destroys paper and boils water.",
+        "c": "Paper beats rock.",
+        "d": "Rock beats scissors.",
+        "e": "Scissors beats paper."
     },
     
     "Attack Relations" : [

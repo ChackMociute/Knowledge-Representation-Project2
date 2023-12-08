@@ -80,8 +80,8 @@ class DiscussionGame:
 if __name__ == "__main__":
     import json
 
-    af = json.load(open('example-argumentation-framework.json'))
-    # af = json.load(open('slide-example.json'))
+    # af = json.load(open('example-argumentation-framework.json'))
+    af = json.load(open('argumentation3.json'))
 
     af = ArgumentationFramework(arguments=af['Arguments'], attack_relations=af['Attack Relations'])
     dg = DiscussionGame(af)
