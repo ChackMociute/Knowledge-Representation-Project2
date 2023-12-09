@@ -1,15 +1,14 @@
 {
-    "Arguments" : {
-        "a": "We should go to the beach, because it is calmer than skateboarding.",
-        "b": "We should go to the zoo, because it has more animals than the beach.",
-        "c": "We should go to the spa, because it smells better than a zoo.",
-        "d": "We should go to the concert, because it has the best animal, i.e., the human.",
-        "e": "We should go to the restaurant, because we are too hungry to party at a concert.",
-        "k": "We should go to the skate park."
+    "Arguments": {
+        "a": "Cats are better than dogs, because they are clean.",
+        "b": "Dogs are better than cats.",
+        "c": "Cats are better than dogs, because they are independent, which is good.",
+        "d": "Independence is not important, because it makes cats aloof and selfish.",
+        "e": "Independence and cleanliness are important, but not for pets."
     },
     
     "Attack Relations" : [
-        ["e","d"], ["d","b"], ["b","a"], 
-        ["c","b"], ["a","k"]
+        ["a","b"], ["c","b"], ["c","d"], 
+        ["d","c"], ["d","e"], ["e","e"]
     ]
 }
