@@ -254,12 +254,23 @@ class DGArgSelectionTests(unittest.TestCase):
         
         self.assertEqual(expected, actual)
         
-    def test_odd_cycle(self):
+    def test_odd_cycle1(self):
         dg = DiscussionGame(odd_cycle_af)
         dg.last_opp_arg = 'a'
         dg.out.add('a')
         
         expected = {'b', 'c'}
+        actual = dg.select_arg()
+        
+        self.assertTrue(actual in expected)
+        
+    def test_odd_cycle2(self):
+        dg = DiscussionGame(odd_cycle_af)
+        dg.in_.add('b')
+        dg.last_opp_arg = 'a'
+        dg.out.add('a')
+        
+        expected = {'c'}
         actual = dg.select_arg()
         
         self.assertTrue(actual in expected)
