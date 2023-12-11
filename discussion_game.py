@@ -1,7 +1,9 @@
 import os
 
 from argumentation import ArgumentationFramework
+from platform import system
 from random import choice
+
 
 class DiscussionGame:
     def __init__(self, af: ArgumentationFramework):
@@ -12,7 +14,7 @@ class DiscussionGame:
         argument = (choice(list(self.af.args)) if argument is None else
                     argument) if len(self.af.args) > 0 else None
         while not self.termination(argument):
-            os.system('cls')
+            os.system('cls' if system() == 'Windows' else 'clear')
             argument = self.turn(argument)
         self.display_winner()
     
